@@ -1,0 +1,4 @@
+package gebtest
+
+class a {
+}
