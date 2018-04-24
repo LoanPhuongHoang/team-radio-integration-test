@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="geb">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/geb-ast-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-core-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-exceptions-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-implicit-assertions-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-spock-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-test-common-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/geb-waiting-2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
