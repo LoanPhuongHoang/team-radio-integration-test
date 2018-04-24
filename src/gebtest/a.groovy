@@ -1,4 +1,0 @@
-package gebtest
-
-class a {
-}
