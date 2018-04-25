@@ -13,5 +13,6 @@
     <orderEntry type="library" name="selenium" level="project" />
     <orderEntry type="library" name="apache" level="project" />
     <orderEntry type="library" name="google" level="project" />
+    <orderEntry type="library" name="groovy-2.4.13" level="application" />
   </component>
 </module>
