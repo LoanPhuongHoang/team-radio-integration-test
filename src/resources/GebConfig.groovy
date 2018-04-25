@@ -1,52 +1,92 @@
+import groovy.transform.Field
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
 
-System.setProperty('webdriver.gecko.driver', 'C:\\6_Driver\\geckodriver.exe')
-System.setProperty('webdriver.chrome.driver', 'C:\\6_Driver\\chromedriver_win32\\chromedriver.exe')
+@Field
+Properties config = loadConfigurations()
 
-//there are 4 options: firefox, firefox-headless, chrome, chrome-headless
-def browser = 'chrome'
+def browser = config.getProperty('geb.browser')
 
-driver = { loadBrowserDriver(browser) }
-reportsDir = 'out/geb-reports'
-reportOnTestFailureOnly = false
-baseUrl = 'http://teamradio-dev.herokuapp.com'
+driver = {
+	loadBrowserDriver(browser)
+}
 
-def loadBrowserDriver(browser) {
+reportsDir = config.getProperty('geb.report.output')
+reportOnTestFailureOnly = config.getProperty('geb.report.failureOnly')
+baseUrl = config.getProperty('app.baseUrl')
+
+
+
+// helper methods:
+
+def loadConfigurations() {
+	Properties properties = new Properties()
+	properties.load(getClass().getResourceAsStream('resources/configuration.properties'))
+
+	return properties
+}
+
+def loadBrowserDriver(String browser) {
     switch (browser) {
         case 'firefox':
-            new FirefoxDriver()
-            break;
+            return getFirefoxDriver(null)
         case 'firefox-headless':
-            new FirefoxDriver(getHeadlessFirefoxOptions())
-            break;
+            return getFirefoxDriver(getHeadlessFirefoxOptions())
         case 'chrome':
-            new ChromeDriver()
-            break;
+            return getChromeDriver(null)
         case 'chrome-headless':
-            new ChromeDriver(getHeadlessChromeOptions())
-            break;
+            return getChromeDriver(getHeadlessChromeOptions())
         default:
-            new ChromeDriver(getHeadlessChromeOptions())
-            break;
-
+            return getChromeDriver(getHeadlessChromeOptions())
     }
+}
+
+def getFirefoxDriver(FirefoxOptions firefoxOptions) {
+	if (isWindows()) {
+		System.setProperty('webdriver.gecko.driver', config.getProperty('geb.webdriver.firefox.windows'))
+	}
+
+	if (isMacOs()) {
+		System.setProperty('webdriver.gecko.driver', config.getProperty('geb.webdriver.firefox.macos'))
+	}
+
+	return firefoxOptions == null ? new FirefoxDriver() : new FirefoxDriver(firefoxOptions)
+}
+
+def getChromeDriver(ChromeOptions chromeOptions) {
+	if (isWindows()) {
+		System.setProperty('webdriver.chrome.driver', config.getProperty('geb.webdriver.chrome.windows'))
+	}
+
+	if (isMacOs()) {
+		System.setProperty('webdriver.chrome.driver', config.getProperty('geb.webdriver.chrome.macos'))
+	}
+
+	return chromeOptions == null ? new ChromeDriver() : new ChromeDriver(chromeOptions)
+}
+
+def isWindows() {
+	System.getProperty('os.name').toLowerCase().contains('windows')
+}
+
+def isMacOs() {
+	System.getProperty('os.name').toLowerCase().contains('mac')
 }
 
 def getHeadlessFirefoxOptions() {
     def firefoxOptions = new FirefoxOptions()
     firefoxOptions.addArguments('--headless')
 
-    return firefoxOptions
+	return firefoxOptions
 }
 
 def getHeadlessChromeOptions() {
-    ChromeOptions chromeOptions = new ChromeOptions()
+    def chromeOptions = new ChromeOptions()
     chromeOptions.addArguments("--headless")
     chromeOptions.addArguments("--disable-browser-side-navigation")
     chromeOptions.addArguments("--no-sandbox")
-    return chromeOptions
-}
 
+	return chromeOptions
+}
