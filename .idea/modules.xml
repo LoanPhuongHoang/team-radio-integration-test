@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/team-radio-integration-test.iml" filepath="$PROJECT_DIR$/team-radio-integration-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/team-radio-integration-test.iml" filepath="$PROJECT_DIR$/src/team-radio-integration-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/team-radio-integration-test1.iml" filepath="$PROJECT_DIR$/team-radio-integration-test1.iml" />
     </modules>
   </component>
 </project>

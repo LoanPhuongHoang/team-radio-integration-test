@@ -4,8 +4,8 @@ class StationTestPage extends GeneralPage{
     static url = '/station/stationtest1'
 
     static at ={
-        stationName.displayed
-        stationName.text() == 'stationtest1'
+//        stationName.present
+//        stationName.text() == 'stationtest1'
     }
 
     static content ={
@@ -22,10 +22,12 @@ class StationTestPage extends GeneralPage{
         videoPlayer{$("div.player iframe")}
         videoInPlaylist{$('div.tab-pane.active img.video-img')}
 
-        modeTheaterButtoon{$('div.icon-wrapper i.fa-lightbulb-o')}
         playSpeaker{$('div.buttons-wrapper div.icon-wrapper i.icon')}
+        modeNormalButtoon{$('div.player-container i.fa-lightbulb-o')}
+        modeTheaterButtoon{$('div.passive-mode i.activeButton')}
         shareStationButton{$('#share-station i.fa-share-alt')}
         settingStationModeButton{$('div.btn-icon i.fa-cog')}
+        playList{$('div.flip-move-playlist')}
 
     }
 }
