@@ -16,7 +16,8 @@ driver = {
 reportsDir = config.getProperty('geb.report.output')
 reportOnTestFailureOnly = config.getProperty('geb.report.failureOnly')
 baseUrl = config.getProperty('app.baseUrl')
-
+atCheckWaiting = true
+baseNavigatorWaiting = true
 
 
 // helper methods:
