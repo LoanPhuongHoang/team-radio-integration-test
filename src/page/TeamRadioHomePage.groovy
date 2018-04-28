@@ -7,6 +7,7 @@ class TeamRadioHomePage extends GeneralPage {
 
     static at = {
         title == 'Team Radio - A playlist for teams that can be edited collaboratively by all users'
+		primaryHeading.displayed
     }
 
     static content = {
