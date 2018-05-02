@@ -11,6 +11,7 @@ class MultiUserLoginGebSpec extends MultiUserGebSpec {
 		to TeamRadioHomePage
 		users[0].login()
 		users[1].login()
+		relax()
 		users[0].logout()
 		users[1].logout()
 

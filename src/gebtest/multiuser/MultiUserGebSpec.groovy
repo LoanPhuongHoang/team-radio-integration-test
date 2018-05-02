@@ -6,15 +6,10 @@ import page.LoginPage
 
 abstract class MultiUserGebSpec extends GebReportingSpec {
 
-//	private Map<User, Browser> userBrowserMap = createUserList()
-//	private Browser overridenBrowser
-//	private Properties config = loadConfigurations()
-
 	private Browser currentBrowser
 	protected List<User> users = createUserList()
 
 	private createUserList() {
-//		Properties config = loadConfigurations()
 		def allUsernames = System.getProperty('app.user.all').split(',')
 		def password = System.getProperty('app.user.password')
 
@@ -39,6 +34,10 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			user.browser.clearCookiesQuietly()
 			user.browser.close()
 		}
+	}
+
+	static protected relax(seconds = 2) {
+		sleep seconds*1000
 	}
 
 	private void setCurrentBrowser(Browser browser) {
