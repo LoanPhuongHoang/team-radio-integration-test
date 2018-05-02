@@ -3,6 +3,7 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
+import resources.ConfigLoader
 
 @Field
 Properties config = loadConfigurations()
@@ -18,6 +19,9 @@ reportOnTestFailureOnly = config.getProperty('geb.report.failureOnly')
 baseUrl = config.getProperty('app.baseUrl')
 atCheckWaiting = true
 baseNavigatorWaiting = true
+
+System.setProperty('app.user.all', config.getProperty('app.user.all'))
+System.setProperty('app.user.password', config.getProperty('app.user.password'))
 
 
 // helper methods:
