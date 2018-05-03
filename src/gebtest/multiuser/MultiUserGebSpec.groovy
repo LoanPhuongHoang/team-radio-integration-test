@@ -1,9 +1,12 @@
 package gebtest.multiuser
 
 import geb.Browser
+import geb.Page
 import geb.spock.GebReportingSpec
 import org.openqa.selenium.By
 import page.LoginPage
+import page.StationTestPage
+import spock.lang.Ignore
 
 abstract class MultiUserGebSpec extends GebReportingSpec {
 
@@ -71,47 +74,45 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			signoutButtonHeader.click()
 		}
 
-		def song = playList[songIndex]
-
 		def clickFavoriteIconAtSong(int songIndex){
 			setCurrentBrowser()
-//			def song = playList[songIndex]
-			def favoriteIcon = song.findElement(By.cssSelector('div.action-icon i.fa'))
+			to StationTestPage
+			def favoriteIcon = playList[songIndex].findElement(By.cssSelector('div.action-icon i.fa'))
 			favoriteIcon.click()
 		}
-
+		@Ignore
 		def clickThumbsdownIconAtSong(int songIndex){
 			setCurrentBrowser()
-//			def song = playList[songIndex]
-			def thumbsdownIcon = song.findElement(By.cssSelector('i.fa-thumbs-down'))
+			to StationTestPage
+			def thumbsdownIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-down'))
 			thumbsdownIcon.click()
 		}
-
+		@Ignore
 		def clickThumbsupIconAtSong(int songIndex){
 			setCurrentBrowser()
-//			def song = playList[songIndex]
-			def thumbsupIcon = song.findElement(By.cssSelector('i.fa-thumbs-up'))
+			to StationTestPage
+			def thumbsupIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-up'))
 			thumbsupIcon.click()
 		}
 
-		def searchSongInStationPage(){
+		def searchSong(String songName){
 			setCurrentBrowser()
-			findSongBox << ['my love','uptown girl', 'if i let you go', 'you raise me up']
+			waitFor{findSongBox.displayed}
+			findSongBox << songName
 			waitFor{searchResultBox.displayed}
 			waitFor{firstResult.click()}
 			waitFor{videoPreviewer.displayed}
-			isPreviewSpeakerMuted(previewSpeaker)
 		}
 
-		def addMessageInStationPage(){
+		def addMessage(String message){
 			setCurrentBrowser()
-			messageInput << 'I like this song'
+			messageInput.displayed
+			messageInput << message
 		}
 
-		def addSongInStationPage(){
+		def addSong(){
+			setCurrentBrowser()
 			addButton.click()
-			videoPlayer.displayed
-			videoInPlaylist.displayed
 		}
 
 		def clickOn(Closure element) {
@@ -120,6 +121,15 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 
 		def doAction(Closure action){
 
+		}
+
+		def goTo(def page){
+			setCurrentBrowser()
+			to page
+		}
+
+		def scrollDown(){
+			driver.executeScript("window.scrollTo(0,500)")
 		}
 
 		private void setCurrentBrowser() {
