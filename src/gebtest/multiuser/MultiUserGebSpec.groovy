@@ -2,6 +2,7 @@ package gebtest.multiuser
 
 import geb.Browser
 import geb.spock.GebReportingSpec
+import org.openqa.selenium.By
 import page.LoginPage
 
 abstract class MultiUserGebSpec extends GebReportingSpec {
@@ -70,7 +71,54 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			signoutButtonHeader.click()
 		}
 
+		def song = playList[songIndex]
+
+		def clickFavoriteIconAtSong(int songIndex){
+			setCurrentBrowser()
+//			def song = playList[songIndex]
+			def favoriteIcon = song.findElement(By.cssSelector('div.action-icon i.fa'))
+			favoriteIcon.click()
+		}
+
+		def clickThumbsdownIconAtSong(int songIndex){
+			setCurrentBrowser()
+//			def song = playList[songIndex]
+			def thumbsdownIcon = song.findElement(By.cssSelector('i.fa-thumbs-down'))
+			thumbsdownIcon.click()
+		}
+
+		def clickThumbsupIconAtSong(int songIndex){
+			setCurrentBrowser()
+//			def song = playList[songIndex]
+			def thumbsupIcon = song.findElement(By.cssSelector('i.fa-thumbs-up'))
+			thumbsupIcon.click()
+		}
+
+		def searchSongInStationPage(){
+			setCurrentBrowser()
+			findSongBox << ['my love','uptown girl', 'if i let you go', 'you raise me up']
+			waitFor{searchResultBox.displayed}
+			waitFor{firstResult.click()}
+			waitFor{videoPreviewer.displayed}
+			isPreviewSpeakerMuted(previewSpeaker)
+		}
+
+		def addMessageInStationPage(){
+			setCurrentBrowser()
+			messageInput << 'I like this song'
+		}
+
+		def addSongInStationPage(){
+			addButton.click()
+			videoPlayer.displayed
+			videoInPlaylist.displayed
+		}
+
 		def clickOn(Closure element) {
+
+		}
+
+		def doAction(Closure action){
 
 		}
 
