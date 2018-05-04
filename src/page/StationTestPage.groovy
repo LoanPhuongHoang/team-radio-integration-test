@@ -11,7 +11,7 @@ class StationTestPage extends GeneralPage{
     static content ={
         stationName{$('div.header-container h1')}
         addSong{$('div.add-song-container h1')}
-        findSongBox{$("input[placeholder='Type a video name, e.g., Shape of you']")}
+        findSongBox{$("input[placeholder='Type a video name, e.g., Perfect - Ed Sheeran']")}
         searchResultBox{$('ul[role=listbox]')}
         firstResult{$('#react-autowhatever-1--item-0')}
         videoPreviewer{$("div.preview iframe")}
@@ -32,7 +32,9 @@ class StationTestPage extends GeneralPage{
         stationSettingButton{$('div.btn-icon i.fa-cog')}
 
         playList{$('div.flip-move-playlist div.item-container')}
-		allTabs{$('ul.nav.nav-tabs a.nav-link')}
 
+		//for both history and favorite list
+		contextSongList{$('div.tab-pane.active div.item-container')}
+		allTabs{$('ul.nav.nav-tabs a.nav-link')}
     }
 }
