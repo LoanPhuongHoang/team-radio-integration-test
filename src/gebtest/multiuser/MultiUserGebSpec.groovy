@@ -80,18 +80,45 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			def favoriteIcon = playList[songIndex].findElement(By.cssSelector('div.action-icon i.fa'))
 			favoriteIcon.click()
 		}
-		@Ignore
+
+		def clickThumbsdownIconAtSong(String songId){
+			setCurrentBrowser()
+			int songIndex
+
+			playList.allElements().eachWithIndex{song, index ->
+				if (song.findElement(By.cssSelector('h6.item-title')).getAttribute('id') == songId){
+					songIndex = index
+				}
+			}
+
+			clickThumbsdownIconAtSong(songIndex)
+
+//			def thumbsdownIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-down'))
+//			thumbsdownIcon.click()
+		}
+
 		def clickThumbsdownIconAtSong(int songIndex){
 			setCurrentBrowser()
-			to StationTestPage
-			def thumbsdownIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-down'))
+			def thumbsdownIcon = playList.allElements().getAt(songIndex).findElement(By.cssSelector('i.fa-thumbs-down'))
 			thumbsdownIcon.click()
 		}
-		@Ignore
+
+		def clickThumbsupIconAtSong(String songId) {
+			setCurrentBrowser()
+			int songIndex
+
+			playList.allElements().eachWithIndex {song, index ->
+				if (song.findElement(By.cssSelector('h6.item-title')).getAttribute('id')	== songId){
+					songIndex = index
+				}
+			}
+
+			clickThumbsupIconAtSong(songIndex)
+		}
+
 		def clickThumbsupIconAtSong(int songIndex){
 			setCurrentBrowser()
-			to StationTestPage
-			def thumbsupIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-up'))
+			def thumbsupIcon = playList.allElements().getAt(songIndex).findElement(By.cssSelector('i.fa-thumbs-up'))
 			thumbsupIcon.click()
 		}
 
@@ -101,12 +128,10 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			findSongBox << songName
 			waitFor{searchResultBox.displayed}
 			waitFor{firstResult.click()}
-			waitFor{videoPreviewer.displayed}
 		}
 
 		def addMessage(String message){
 			setCurrentBrowser()
-			messageInput.displayed
 			messageInput << message
 		}
 
@@ -115,21 +140,17 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			addButton.click()
 		}
 
-		def clickOn(Closure element) {
-
-		}
-
-		def doAction(Closure action){
-
-		}
-
 		def goTo(def page){
 			setCurrentBrowser()
 			to page
 		}
 
-		def scrollDown(){
+		def scrollDownToBottom(){
 			driver.executeScript("window.scrollTo(0,500)")
+		}
+
+		def scrollDownToMiddle(){
+			driver.executeScript("window.scrollTo(0,200)")
 		}
 
 		private void setCurrentBrowser() {
