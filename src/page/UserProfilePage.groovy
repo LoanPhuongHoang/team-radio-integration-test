@@ -22,5 +22,16 @@ class UserProfilePage extends GeneralPage {
         uploadSuccessfulMessage{$('div.notifications-wrapper div.notification-message')}
         closeMessageButton{$('div.notifications-wrapper span.notification-dismiss')}
 
+		myStationList {$('div.station-item-container div.station-item')}
+
+		editProfileButton {$('i.fa-pencil')}
+		editInformationProfileSelection {$('div.dropdown-menu-right.show button.dropdown-item i.fa-user')}
+		editInformationPopup {$('div.modal-content')}
+		displayNameInput {$("input[placeholder='Enter your Display name']" )}
+		firstNameInput {$("input[placeholder ='Enter your First name']")}
+		saveButton {$('div.footer-form button.btn-primary')}
+
+		allLinks {$('li.nav-item')}
+		favoriteSongListInProfile{$('div.favorite-song-name')}
     }
 }

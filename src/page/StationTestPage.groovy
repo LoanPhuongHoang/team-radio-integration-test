@@ -5,7 +5,7 @@ class StationTestPage extends GeneralPage{
 
     static at = {
         stationName.present
-        stationName.text() == 'stationtest1'
+//        stationName.text() == 'stationtest1'
     }
 
     static content ={
@@ -36,5 +36,13 @@ class StationTestPage extends GeneralPage{
 		//for both history and favorite list
 		contextSongList{$('div.tab-pane.active div.item-container')}
 		allTabs{$('ul.nav.nav-tabs a.nav-link')}
+		noContentDisplay{$('div.tab-pane+div.active div.playlist-none')}
+		favoriteSongList{$('div.tab-pane+div.active h6.item-title')}
+
+		//chat section
+		messageBoxChat{$('#message-box')}
+		messageEnterButton{$('i.fa-paper-plane')}
+//		messageContent{username -> $("div.message-container div.display-none[text='$username'] + div.message-content")}
+		messageContainer{$'#messages-container'}
     }
 }
