@@ -1,16 +1,17 @@
 package gebtest.multiuser
 
 import geb.Browser
-import geb.Page
 import geb.spock.GebReportingSpec
 import org.openqa.selenium.By
 import page.LoginPage
 import page.StationTestPage
-import spock.lang.Ignore
+import proxy.UserInvocationHandler
+
+import java.lang.reflect.Proxy
 
 abstract class MultiUserGebSpec extends GebReportingSpec {
 
-	private Browser currentBrowser
+	private Browser activeBrowser
 	protected List<User> users = createUserList()
 
 	private createUserList() {
@@ -20,14 +21,17 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		def users = allUsernames.collect { username ->
 			def browser = new Browser()
 			browser.config.cacheDriver = false
-			def user = new User(username, password, browser)
+			def teamRadioUser = new TeamRadioUser(username, password, browser)
+			def user = (User) Proxy.newProxyInstance(MultiUserGebSpec.classLoader,
+													[User.class] as Class[],
+													new UserInvocationHandler(teamRadioUser))
 			user
 		}
 	}
 
 	@Override
 	Browser getBrowser() {
-		currentBrowser ?: super.browser
+		activeBrowser ?: super.browser
 	}
 
 	@Override
@@ -35,8 +39,9 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		super.resetBrowser()
 
 		users.each { user ->
-			user.browser.clearCookiesQuietly()
-			user.browser.close()
+			def browser = Proxy.getInvocationHandler(user).getUser().browser
+			browser.clearCookiesQuietly()
+			browser.close()
 		}
 	}
 
@@ -44,24 +49,23 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		sleep seconds*1000
 	}
 
-	private void setCurrentBrowser(Browser browser) {
-		this.currentBrowser = browser
+	private void setActiveBrowser(Browser browser) {
+		this.activeBrowser = browser
 	}
 
-	private class User {
+	private class TeamRadioUser implements User {
 
 		private String username
 		private String password
 		private Browser browser
 
-		User(String username, String password, Browser browser) {
+		TeamRadioUser(String username, String password, Browser browser) {
 			this.username = username
 			this.password = password
 			this.browser = browser
 		}
 
 		def login() {
-			setCurrentBrowser()
 			to LoginPage
 			usernameInput << username
 			passwordInput << password
@@ -69,17 +73,16 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def logout() {
-			setCurrentBrowser()
 			userInfoDropDownButton.click()
 			signoutButtonHeader.click()
 		}
 
 		def clickFavoriteIconAtSong(int songIndex){
-			setCurrentBrowser()
 			to StationTestPage
 			def favoriteIcon = playList[songIndex].findElement(By.cssSelector('div.action-icon i.fa'))
 			favoriteIcon.click()
 		}
+
 
 		def clickThumbsdownIconAtSong(String songId){
 			setCurrentBrowser()
@@ -103,6 +106,7 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			thumbsdownIcon.click()
 		}
 
+
 		def clickThumbsupIconAtSong(String songId) {
 			setCurrentBrowser()
 			int songIndex
@@ -123,7 +127,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def searchSong(String songName){
-			setCurrentBrowser()
 			waitFor{findSongBox.displayed}
 			findSongBox << songName
 			waitFor{searchResultBox.displayed}
@@ -136,7 +139,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def addSong(){
-			setCurrentBrowser()
 			addButton.click()
 		}
 
@@ -155,6 +157,10 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 
 		private void setCurrentBrowser() {
 			setCurrentBrowser(browser)
+		}
+
+		private void takeControl() {
+			setActiveBrowser(browser)
 		}
 	}
 }
