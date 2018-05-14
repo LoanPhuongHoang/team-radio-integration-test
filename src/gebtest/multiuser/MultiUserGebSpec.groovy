@@ -85,7 +85,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 
 
 		def clickThumbsdownIconAtSong(String songId){
-			setCurrentBrowser()
 			int songIndex
 
 			playList.allElements().eachWithIndex{song, index ->
@@ -101,14 +100,12 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def clickThumbsdownIconAtSong(int songIndex){
-			setCurrentBrowser()
 			def thumbsdownIcon = playList.allElements().getAt(songIndex).findElement(By.cssSelector('i.fa-thumbs-down'))
 			thumbsdownIcon.click()
 		}
 
 
 		def clickThumbsupIconAtSong(String songId) {
-			setCurrentBrowser()
 			int songIndex
 
 			playList.allElements().eachWithIndex {song, index ->
@@ -121,7 +118,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def clickThumbsupIconAtSong(int songIndex){
-			setCurrentBrowser()
 			def thumbsupIcon = playList.allElements().getAt(songIndex).findElement(By.cssSelector('i.fa-thumbs-up'))
 			thumbsupIcon.click()
 		}
@@ -134,7 +130,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def addMessage(String message){
-			setCurrentBrowser()
 			messageInput << message
 		}
 
@@ -143,7 +138,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def goTo(def page){
-			setCurrentBrowser()
 			to page
 		}
 

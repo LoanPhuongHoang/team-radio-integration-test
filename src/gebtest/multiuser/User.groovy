@@ -17,5 +17,6 @@ interface User {
 	def addMessage(String message)
 	def addSong()
 	def goTo(def page)
-	def scrollDown()
+	def scrollDownToBottom()
+	def scrollDownToMiddle()
 }
