@@ -8,6 +8,7 @@ class MultiUseChatGebSpec extends MultiUserGebSpec {
 
 	def user1 = users[1]
 	def user2 = users[2]
+	def uniqueMessage
 
 	def 'users logging in'() {
 		when: 'user 1 and user2 log in and go to station test page'
@@ -21,24 +22,51 @@ class MultiUseChatGebSpec extends MultiUserGebSpec {
 		relax()
 
 		user1.scrollDownToBottom()
+		user1.openChatBox()
+
 		user2.scrollDownToBottom()
+		user2.openChatBox()
+
+		uniqueMessage = generateUniqueMessage()
+		user1.addMessageInChatBox uniqueMessage
+		relax()
 
 		then:
+		user2.seeMessageOf user1, uniqueMessage
+		relax()
 
-		user1.addMessageInChatBox 'hi'
+		when:
+		uniqueMessage = generateUniqueMessage()
+		user2.addMessageInChatBox uniqueMessage
 		relax()
-		user2.seeMessageOf user1
+
+		then:
+		user1.seeMessageOf user2, uniqueMessage
 		relax()
-		user2.addMessageInChatBox 'hello'
+
+		when:
+		uniqueMessage = generateUniqueMessage()
+		user1.addMessageInChatBox uniqueMessage
 		relax()
-		user1.seeMessageOf user2
+
+		then:
+		user2.seeMessageOf user1, uniqueMessage
 		relax()
-		user1.addMessageInChatBox 'so cool'
-		relax()
-		user2.seeMessageOf user1
-		relax()
-		user2.addMessageInChatBox 'agree'
-		relax()
-		user1.seeMessageOf user2
+
+		and:
+		user1.closeChatBox()
+		user1.seeChatButton()
+
+//		user1.minimumBoxChatButton.displayed
+//		user1.minimumBoxChatButton.click()
+//		user1.chatBoxButton.displayed
+
+		user2.closeChatBox()
+		user2.seeChatButton()
+
+//		user2.minimumBoxChatButton.displayed
+//		user2.minimumBoxChatButton.click()
+//		user2.chatBoxButton.displayed
+
 	}
 }
