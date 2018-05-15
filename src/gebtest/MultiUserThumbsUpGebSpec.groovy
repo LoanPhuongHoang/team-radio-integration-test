@@ -18,18 +18,9 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 							   'you raise me up':'It is so encouraged!']
 		stationOwner.login()
 		relax()
-//		stationOwner.goto StationTestPage
 		to StationTestPage
 		stationOwner.scrollDownToBottom()
-
-		songWithMessage.each{songName, message ->
-			stationOwner.searchSong songName
-			relax()
-			stationOwner.addMessage message
-			relax()
-			stationOwner.addSong()
-			relax()
-		}
+		stationOwner.addSong(songWithMessage)
 
 		def songIdList = getAllSongIdsInPlaylist()
 
@@ -77,21 +68,5 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 		then:'new index of that song in the playlist will be 1'
 		getSongIndexById(songIdList[1]) ==1
 	}
-
-	def getAllSongIdsInPlaylist() {
-		playList.allElements().collect { song ->
-			song.findElement(By.cssSelector('h6.item-title')).getAttribute('id')
-		}
-	}
-
-	def getSongIndexById(String songId){
-		int songIndex
-		playList.allElements().eachWithIndex{song, index ->
-			if (song.findElement(By.cssSelector('h6.item-title')).getAttribute('id') == songId) {
-				songIndex = index
-			}
-		}
-
-		songIndex
-	}
 }
+

@@ -20,15 +20,7 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 		relax()
 		to StationTestPage
 		stationOwner.scrollDownToBottom()
-
-		songWithMessage.each{songName, message ->
-			stationOwner.searchSong songName
-			relax()
-			stationOwner.addMessage message
-			relax()
-			stationOwner.addSong()
-			relax()
-		}
+		stationOwner.addSong(songWithMessage)
 
 		def songIdList = getAllSongIdsInPlaylist()
 
@@ -76,22 +68,4 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 		then:
 		getSongIndexById(songIdList[2]) == 2
 	}
-
-	def getAllSongIdsInPlaylist(){
-		playList.allElements().collect {song ->
-			song.findElement(By.cssSelector('h6.item-title')).getAttribute('id')
-		}
-	}
-
-	def getSongIndexById(String songId){
-		int songIndex
-		playList.allElements().eachWithIndex{song, index ->
-			if (song.findElement(By.cssSelector('h6.item-title')).getAttribute('id') == songId){
-				songIndex = index
-			}
-		}
-
-		songIndex
-	}
-
 }
