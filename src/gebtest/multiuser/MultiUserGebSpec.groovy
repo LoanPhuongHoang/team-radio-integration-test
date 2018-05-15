@@ -27,7 +27,25 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 													new UserInvocationHandler(teamRadioUser))
 			user
 		}
+
+		users.addAll createAnonymousUserList()
+		users
 	}
+
+
+	private createAnonymousUserList(){
+		def anonymousUserList = []
+		(0..1).each{
+			def browser = new Browser ()
+			browser.config.cacheDriver = false
+			def anonymousUser = new TeamRadioUser(null, null, browser)
+			def user = (User) Proxy.newProxyInstance(MultiUserGebSpec.classLoader,
+													[User.class] as Class[],
+													new UserInvocationHandler(anonymousUser))
+			anonymousUserList << user
+		}
+			anonymousUserList
+		}
 
 	@Override
 	Browser getBrowser() {
@@ -47,10 +65,42 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 
 	static protected relax(seconds = 2) {
 		sleep seconds*1000
+		true
 	}
 
 	private void setActiveBrowser(Browser browser) {
 		this.activeBrowser = browser
+	}
+
+	def getSongIndexById(String songId){
+		int songIndex
+		playList.allElements().eachWithIndex{song, index ->
+			if (song.findElement(By.cssSelector('h6.item-title')).getAttribute('id') == songId){
+				songIndex = index
+			}
+		}
+
+		songIndex
+	}
+
+	def getAllSongIdsInPlaylist(){
+		playList.allElements().collect {song ->
+			song.findElement(By.cssSelector('h6.item-title')).getAttribute('id')
+		}
+	}
+
+	def getMessageByUsername(String username){
+		String message
+			messageContainer.allElements().each {container ->
+			if (container.findElement(By.cssSelector('div.username')).getText() == username){
+				message = container.findElement(By.cssSelector('div.message-content')).getText()
+			}
+		}
+		return message
+	}
+
+	def generateUniqueMessage(){
+		'message at ' + System.currentTimeMillis()
 	}
 
 	private class TeamRadioUser implements User {
@@ -94,9 +144,6 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			}
 
 			clickThumbsdownIconAtSong(songIndex)
-
-//			def thumbsdownIcon = playList[songIndex].findElement(By.cssSelector('i.fa-thumbs-down'))
-//			thumbsdownIcon.click()
 		}
 
 		def clickThumbsdownIconAtSong(int songIndex){
@@ -122,6 +169,17 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			thumbsupIcon.click()
 		}
 
+		def addSong(Map songWithMessage){
+			songWithMessage.each{songName, message ->
+				searchSong songName
+				relax()
+				addMessage message
+				relax()
+				clickAddSongButton()
+				relax()
+			}
+		}
+
 		def searchSong(String songName){
 			waitFor{findSongBox.displayed}
 			findSongBox << songName
@@ -133,7 +191,7 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			messageInput << message
 		}
 
-		def addSong(){
+		def clickAddSongButton(){
 			addButton.click()
 		}
 
@@ -142,16 +200,53 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def scrollDownToBottom(){
-			driver.executeScript("window.scrollTo(0,500)")
+			driver.executeScript("window.scrollTo(0, document.body.scrollHeight)")
 		}
 
 		def scrollDownToMiddle(){
-			driver.executeScript("window.scrollTo(0,200)")
+			driver.executeScript("window.scrollTo(0,document.body.scrollHeight/2)")
 		}
 
-		private void setCurrentBrowser() {
-			setCurrentBrowser(browser)
+		def addMessageInChatBox(String message){
+			messageBoxChat << message
+			messageEnterButton.click()
 		}
+
+		def seeMessageOf(User user, String message){
+			getMessageByUsername(user.username) == message
+		}
+
+		def openChatBox(){
+			chatBoxButton.click()
+		}
+
+		def closeChatBox(){
+			minimumBoxChatButton.click()
+		}
+
+		def seeChatButton(){
+			chatBoxButton.displayed
+		}
+
+		def createAnonymousStation(){
+			createStationButton.click()
+			warningStationMessage.displayed
+			createStationInput << 'anonymousstation'
+			createStationButton.click()
+		}
+
+//		private void getSize() throws Exception {
+//			//Locate element for which you wants to get height and width.
+//			WebElement Image = driver.findElement(By.xpath("//img[@border='0']"));
+//
+//			//Get width of element.
+//			int ImageWidth = Image.getSize().getWidth();
+//			System.out.println("Image width Is "+ImageWidth+" pixels");
+//
+//			//Get height of element.
+//			int ImageHeight = Image.getSize().getHeight();
+//			System.out.println("Image height Is "+ImageHeight+" pixels");
+//		}
 
 		private void takeControl() {
 			setActiveBrowser(browser)
