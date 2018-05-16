@@ -213,7 +213,7 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 		}
 
 		def seeMessageOf(User user, String message){
-			getMessageByUsername(user.username) == message
+			getMessageByUsername(user.h.user.username) == message
 		}
 
 		def openChatBox(){
