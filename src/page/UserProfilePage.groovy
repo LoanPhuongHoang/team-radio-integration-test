@@ -6,12 +6,11 @@ class UserProfilePage extends GeneralPage {
     static at = {
         title == 'Team Radio - A playlist for teams that can be edited collaboratively by all users'
         userDisplayName.displayed
-        userDisplayName.text() =='test'
     }
 
     static content ={
         userDisplayName{$('div.name h3.display-name')}
-        userAvatarButton{$("div.user-avatar img[alt='User Avatar']")}
+        userAvatarButton{$("div.user-avatar img")}
         updateCoverPhotoButton{$('div.update-cover button.btn-update-cover')}
         imageUploader{$("input[type='file']")}
         croppingEditor{$('div.modal-content')}
@@ -33,5 +32,7 @@ class UserProfilePage extends GeneralPage {
 
 		allLinks {$('li.nav-item')}
 		favoriteSongListInProfile{$('div.favorite-song-name')}
+
+		reputationScore{$('span.reputation')}
     }
 }
