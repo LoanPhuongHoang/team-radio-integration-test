@@ -40,9 +40,11 @@ class StationTestPage extends GeneralPage{
 		favoriteSongList{$('div.tab-pane+div.active h6.item-title')}
 
 		//chat section
+		chatBoxButton{$('div.chat-box-button')}
 		messageBoxChat{$('#message-box')}
 		messageEnterButton{$('i.fa-paper-plane')}
 //		messageContent{username -> $("div.message-container div.display-none[text='$username'] + div.message-content")}
-		messageContainer{$'#messages-container'}
+		messageContainer{$'div.message-left div.message-container'}
+		minimumBoxChatButton{$('i.fa-minus')}
     }
 }

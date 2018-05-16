@@ -22,8 +22,8 @@ class StationTestGebSpec extends GebReportingSpec{
 		and:
 		at TeamRadioHomePage
 
-		when:
-		to StationTestPage
+		when:to StationTestPage
+
 
         then:
 //        stationName.displayed
@@ -68,14 +68,36 @@ class StationTestGebSpec extends GebReportingSpec{
 				println song.findElement(By.cssSelector('h6.item-title')).getText()
 				song.findElement(By.cssSelector('i.fa-thumbs-up')).displayed
 				song.findElement(By.cssSelector('i.fa-thumbs-down')).displayed
-//				song.findElement(By.cssSelector('div.action-icon i.fa')).displayed
+
+				//check if favorite icon is displayed
+				song.findElement(By.cssSelector('div.action-icon i.fa')).displayed
 			}
+		}
+	}
+
+	def 'favorite songs should be avaiable in favorite list'(){
+		when:
+		at StationTestPage
+
+		then:
+		if(playList.size()>0){
+			def song = playList.allElements()[2]
+			def favoriteIcon = song.findElement(By.cssSelector('div.action-icon i.fa'))
+			favoriteIcon.click()
+			def songId = song.findElement(By.cssSelector('h6.item-title')).getAttribute('id')
+
+			def playListTab = allTabs.allElements().getAt(0)
+			def favoriteTab = allTabs.allElements().getAt(2)
+			favoriteTab.click()
+			contextSongList.allElements().last().findElement(By.cssSelector('h6.item-title')).getAttribute('id') == songId
 		}
 	}
 
 	def 'check if thumbsdown makes change for songs oder'(){
 		when:
 		at StationTestPage
+		def playListTab = allTabs.allElements().getAt(0)
+		playListTab.click()
 
 		then: 'click downvote button on one specific song and get its position'
 		def downvotedSongId
@@ -92,14 +114,17 @@ class StationTestGebSpec extends GebReportingSpec{
 		}
 
 		and: 'Check if downvoted song go to the last position'
-		def playListTab = allTabs.allElements().getAt(0)
-		def historyTab = allTabs.allElements().getAt(1)
+//		def playListTab = allTabs.allElements().getAt(0)
+//		def historyTab = allTabs.allElements().getAt(1)
+//
+//		historyTab.click()
+//		playListTab.click()
 
-		historyTab.click()
-		playListTab.click()
+		sleep(2000)
 
-		(playList.allElements().last()).findElement(By.cssSelector('h6.item-title')).getAttribute('id') == downvotedSongId
+		playList.allElements().last().findElement(By.cssSelector('h6.item-title')).getAttribute('id') == downvotedSongId
 	}
+
 
 	def hasPlayerSpeakerTurnedOn(def playSpeaker){
 		def classNames = playSpeaker.classes()
@@ -110,4 +135,5 @@ class StationTestGebSpec extends GebReportingSpec{
 			return false
 	}
 }
-
+//Upvote button
+//song.findElement(By.cssSelector('i.fa-thumbs-up')).displayed
