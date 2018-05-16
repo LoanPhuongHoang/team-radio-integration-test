@@ -23,6 +23,7 @@ class LoginPage extends GeneralPage {
         errorLoginMessage{$('form div.alert-danger')}
 
         createNewAccountLink{$("div.login__register-callout a[href='/register']")}
+		googleLoginButton {$('button.btn-google-plus')}
 
     }
 }

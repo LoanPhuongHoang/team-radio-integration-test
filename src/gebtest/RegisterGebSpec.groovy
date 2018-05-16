@@ -100,9 +100,9 @@ class RegisterGebSpec extends GebReportingSpec{
         displayNameInput        <<  'test1'
         usernameInput           <<  'test1'
         emailInput              <<  'test1@gmail.com'
-        passwordInput           <<  '123456'
-        confirmPasswordInput    <<  '123456'
-        signUpButton.click()
+		passwordInput           <<  '123456'
+		confirmPasswordInput    <<  '123456'
+		signUpButton.click()
 
         then:
         at TeamRadioHomePage

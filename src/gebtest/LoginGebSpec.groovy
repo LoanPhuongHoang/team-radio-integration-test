@@ -39,7 +39,7 @@ class LoginGebSpec extends GebReportingSpec {
         'abc'   | '123'     |{errorLoginMessage.displayed && errorLoginMessage.text() == 'Bad credentials'}
     }
 
-    def 'Login successfully with username and password'(){
+    def 'Login successfully with username and password; logout in the end'(){
         given:
         to LoginPage
 
@@ -51,9 +51,10 @@ class LoginGebSpec extends GebReportingSpec {
         then:
         at TeamRadioHomePage
 
-        and:
+        and:'Logout'
         waitFor(10) {userInfoDropDownButton.displayed}
         userInfoDropDownButton.click()
+
         waitFor(10) {signoutButtonHeader.displayed}
         signoutButtonHeader.click()
     }
@@ -68,4 +69,15 @@ class LoginGebSpec extends GebReportingSpec {
         then:
         at RegisterPage
     }
+	def 'Loging in by Google account'(){
+		given:
+		to LoginPage
+
+		when:
+		loginLinkHeader.click()
+		googleLoginButton.click()
+
+		then:
+		driver.switchTo().window(driver.windowHandles.last())
+	}
 }
