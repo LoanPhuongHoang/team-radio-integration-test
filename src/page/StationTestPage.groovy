@@ -4,7 +4,7 @@ class StationTestPage extends GeneralPage{
     static url = '/station/stationtest1'
 
     static at = {
-        stationName.present
+        stationName.displayed
 //        stationName.text() == 'stationtest1'
     }
 
@@ -46,5 +46,10 @@ class StationTestPage extends GeneralPage{
 //		messageContent{username -> $("div.message-container div.display-none[text='$username'] + div.message-content")}
 		messageContainer{$'div.message-left div.message-container'}
 		minimumBoxChatButton{$('i.fa-minus')}
+
+		privateStationButton{$('label.switch-3d input.switch-input')}
+
+		onlineUserNumber{$('span.online-users-length')}
+
     }
 }

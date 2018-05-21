@@ -22,7 +22,8 @@ baseNavigatorWaiting = true
 
 System.setProperty('app.user.all', config.getProperty('app.user.all'))
 System.setProperty('app.user.password', config.getProperty('app.user.password'))
-
+System.setProperty('app.baseUrl', config.getProperty('app.baseUrl'))
+System.setProperty('mongo.shell.path', config.getProperty('mongo.shell.path'))
 
 // helper methods:
 

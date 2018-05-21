@@ -19,4 +19,12 @@ class HomePageAccessGebSpec extends GebReportingSpec {
 
     }
 
+//	def 'create private station'(){
+//		when:
+//		to TeamRadioHomePage
+//
+//		then:
+//		privateStationButton.displayed
+//	}
+
 }

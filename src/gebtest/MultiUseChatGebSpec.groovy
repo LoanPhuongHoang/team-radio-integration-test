@@ -6,8 +6,8 @@ import spock.lang.Shared
 
 class MultiUseChatGebSpec extends MultiUserGebSpec {
 
-	def user1 = users[1]
-	def user2 = users[2]
+	def user1 = users['testuser1']
+	def user2 = users['testuser2']
 	def uniqueMessage
 
 	def 'users logging in'() {

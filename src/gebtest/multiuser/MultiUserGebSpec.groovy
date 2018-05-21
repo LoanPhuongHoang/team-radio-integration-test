@@ -12,40 +12,41 @@ import java.lang.reflect.Proxy
 abstract class MultiUserGebSpec extends GebReportingSpec {
 
 	private Browser activeBrowser
-	protected List<User> users = createUserList()
+	protected Map<String,User> users = createUserMap()
+	protected notLocalhost = isNotLocalhost()
 
-	private createUserList() {
+	private createUserMap() {
 		def allUsernames = System.getProperty('app.user.all').split(',')
 		def password = System.getProperty('app.user.password')
 
-		def users = allUsernames.collect { username ->
+		def users = allUsernames.collectEntries { username ->
 			def browser = new Browser()
 			browser.config.cacheDriver = false
 			def teamRadioUser = new TeamRadioUser(username, password, browser)
 			def user = (User) Proxy.newProxyInstance(MultiUserGebSpec.classLoader,
 													[User.class] as Class[],
 													new UserInvocationHandler(teamRadioUser))
-			user
+
+			[username, user]
 		}
 
-		users.addAll createAnonymousUserList()
+		users.putAll createAnonymousUserMap()
 		users
 	}
 
-
-	private createAnonymousUserList(){
-		def anonymousUserList = []
-		(0..1).each{
+	private createAnonymousUserMap(){
+		def anonymousUserMap = (0..1).collectEntries {
 			def browser = new Browser ()
 			browser.config.cacheDriver = false
 			def anonymousUser = new TeamRadioUser(null, null, browser)
 			def user = (User) Proxy.newProxyInstance(MultiUserGebSpec.classLoader,
 													[User.class] as Class[],
 													new UserInvocationHandler(anonymousUser))
-			anonymousUserList << user
+			["anonUser${it+1}", user]
 		}
-			anonymousUserList
-		}
+
+		anonymousUserMap
+	}
 
 	@Override
 	Browser getBrowser() {
@@ -101,6 +102,14 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 
 	def generateUniqueMessage(){
 		'message at ' + System.currentTimeMillis()
+	}
+
+	def generateUniqueStationName(){
+		'station ' + System.currentTimeMillis()
+	}
+
+	def isNotLocalhost(){
+		!System.getProperty('app.baseUrl').contains('localhost')
 	}
 
 	private class TeamRadioUser implements User {
@@ -199,12 +208,16 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			to page
 		}
 
+		def goTo(String url){
+			go url
+		}
+
 		def scrollDownToBottom(){
 			driver.executeScript("window.scrollTo(0, document.body.scrollHeight)")
 		}
 
-		def scrollDownToMiddle(){
-			driver.executeScript("window.scrollTo(0,document.body.scrollHeight/2)")
+		def scrollTo(int position){
+			driver.executeScript("window.scrollTo(0,$position)")
 		}
 
 		def addMessageInChatBox(String message){
@@ -228,12 +241,11 @@ abstract class MultiUserGebSpec extends GebReportingSpec {
 			chatBoxButton.displayed
 		}
 
-		def createAnonymousStation(){
-			createStationButton.click()
-			warningStationMessage.displayed
-			createStationInput << 'anonymousstation'
+		def createStation(String stationName){
+			createStationInput << stationName
 			createStationButton.click()
 		}
+
 
 //		private void getSize() throws Exception {
 //			//Locate element for which you wants to get height and width.

@@ -50,6 +50,7 @@ class LoginGebSpec extends GebReportingSpec {
 
         then:
         at TeamRadioHomePage
+//		privateStationButton.attr('value') == 'false'
 
         and:'Logout'
         waitFor(10) {userInfoDropDownButton.displayed}

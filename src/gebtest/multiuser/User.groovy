@@ -4,9 +4,9 @@ import geb.Browser
 import geb.Page
 
 interface User {
-	String username
-	String password
-	Browser browser
+//	String username
+//	String password
+//	Browser browser
 
 	def login()
 	def logout()
@@ -19,11 +19,13 @@ interface User {
 	def addMessage(String message)
 	def addSong(Map songWithMessage)
 	def goTo(def page)
+	def goTo(String url)
 	def scrollDownToBottom()
-	def scrollDownToMiddle()
+	def scrollTo(int position)
 	def openChatBox()
 	def addMessageInChatBox(String message)
 	def seeMessageOf(User user, String message)
 	def closeChatBox()
 	def seeChatButton()
+	def createStation(String stationName)
 }

@@ -15,7 +15,8 @@ class TeamRadioHomePage extends GeneralPage {
         createStationInput {$('input.transparent-form-control[name=name]')}
         createStationButton{$('div.input-wrapper button.button-submit')}
 		warningStationMessage{$('div.text-error')}
-        stationList{$('#station-browser')}
+        stationList{$('div.station-name span')}
         stationTestThumbnail{$('#station-5adc0b3b47737f00046d4f29')}
+		privateStationButton{$('input.form-check-input')}
     }
 }

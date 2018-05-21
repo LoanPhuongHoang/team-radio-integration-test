@@ -11,6 +11,8 @@ class GeneralPage extends Page{
 
         yourProfileButtonHeader{$("a[href='/profile']")}
         signoutButtonHeader {$("a[href='/help']+button")}
+		stationList{$('div.station-name span')}
+
 
     }
 

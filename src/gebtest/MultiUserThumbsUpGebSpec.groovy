@@ -1,16 +1,17 @@
 package gebtest
 
 import gebtest.multiuser.MultiUserGebSpec
-import org.openqa.selenium.By
-import page.LoginPage
 import page.StationTestPage
-import page.TeamRadioHomePage
+import spock.lang.IgnoreIf
 
 class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 
+	@IgnoreIf({notLocalhost})
 	def 'multiple users thumbs up test'() {
 		given:
-		def (stationOwner, user1, user2) = users
+		def stationOwner = users['test']
+		def user1 = users['testuser1']
+		def user2 = users['testuser2']
 
 		and:'StationOwner logs in, goes to station test page and adds 3 songs'
 		def songWithMessage = ['my love':'I like this song',
@@ -35,7 +36,7 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 		relax()
 
 		when: 'user1 clicks thumbs up on last song in current playlist'
-		user1.scrollDownToMiddle()
+		user1.scrollTo(500)
 		user1.clickThumbsupIconAtSong(songIdList[2])
 		relax()
 
@@ -43,7 +44,7 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 		getSongIndexById(songIdList[2]) == 1
 
 		when:'user 2 clicks thumbs up on the last song in current playlist'
-		user2.scrollDownToMiddle()
+		user2.scrollTo(500)
 		user2.clickThumbsupIconAtSong(songIdList[1])
 		relax()
 
@@ -52,7 +53,7 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 
 		when:'user 2 clicks thumbs up on the last song in current playlist'
 		relax()
-		user2.scrollDownToMiddle()
+		user2.scrollTo(500)
 		user2.clickThumbsupIconAtSong(songIdList[2])
 		relax()
 
@@ -61,7 +62,7 @@ class MultiUserThumbsUpGebSpec extends MultiUserGebSpec {
 
 		when:'use 1 clicks thumbs up on the last song in current playlist'
 		relax()
-		user1.scrollDownToMiddle()
+		user1.scrollTo(500)
 		user1.clickThumbsupIconAtSong(songIdList[1])
 		relax()
 

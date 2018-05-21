@@ -1,16 +1,17 @@
 package gebtest
 
 import gebtest.multiuser.MultiUserGebSpec
-import org.openqa.selenium.By
 import page.StationTestPage
-import page.LoginPage
-import page.TeamRadioHomePage
+import spock.lang.IgnoreIf
 
 class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 
+	@IgnoreIf({notLocalhost})
 	def 'multiple users thumbs down test' (){
 		given:
-		def (stationOwner, user1, user2) = users
+		def stationOwner = users['test']
+		def user1 = users['testuser1']
+		def user2 = users['testuser2']
 
 		and: 'StationOwner logs in, goes to station test page and adds 3 songs'
 		def songWithMessage = ['my love':'I like this song',
@@ -35,7 +36,7 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 		relax()
 
 		when:
-		user1.scrollDownToMiddle()
+		user1.scrollTo(500)
 		user1.clickThumbsdownIconAtSong(songIdList[1])
 		relax()
 
@@ -43,7 +44,7 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 		getSongIndexById(songIdList[1]) ==2
 
 		when:
-		user2.scrollDownToMiddle()
+		user2.scrollTo(500)
 		user2.clickThumbsdownIconAtSong(songIdList[2])
 		relax()
 
@@ -52,7 +53,7 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 
 		when:
 		relax()
-		user2.scrollDownToMiddle()
+		user2.scrollTo(500)
 		user2.clickThumbsdownIconAtSong(songIdList[1])
 		relax()
 
@@ -61,7 +62,7 @@ class MultiUserThumbsDownGebSpec extends MultiUserGebSpec{
 
 		when:
 		relax()
-		user1.scrollDownToMiddle()
+		user1.scrollTo(500)
 		user1.clickThumbsdownIconAtSong(songIdList[2])
 		relax()
 
